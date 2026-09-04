@@ -1,0 +1,25 @@
+# slack-waterline
+
+> A Claude Code skill that reads every message in a Slack workspace and proves
+> nothing was missed, then writes the daily or weekly digest and, when asked,
+> the reply. Zero dependencies, many workspaces from one install.
+
+The core idea: a read position may only move for content that was actually
+delivered to a reader. Fetching is not reading. Three positions are tracked per
+conversation — what was READ, what the triage SCORED, and what SLACK is holding
+— each with exactly one writer.
+
+The problem it solves: a Slack reply never moves its parent message, so a
+conversation happening inside an older thread reports zero unread from the top
+level. Most catch-up tooling also marks messages read when it fetches them,
+which turns any interruption into a permanent silent loss.
+
+## Docs
+
+- [SKILL.md](skills/slack-waterline/SKILL.md): the operating instructions an agent follows
+- [read-state.md](skills/slack-waterline/references/read-state.md): the three read positions and the misses that motivated each
+- [tokens-and-scopes.md](skills/slack-waterline/references/tokens-and-scopes.md): user vs bot tokens, scope list, rate limits, the HTTP 200 trap
+- [workspace-config.md](skills/slack-waterline/references/workspace-config.md): per-workspace config, signal patterns, running many workspaces
+- [reports.md](skills/slack-waterline/references/reports.md): digest format, delivery to your own DM, scheduling
+- [AGENTS.md](AGENTS.md): invariants for anyone modifying the skill
+- [README.md](README.md): install and usage

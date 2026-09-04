@@ -1,0 +1,37 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Offline. No token, no network, no fixtures — every assertion is a real
+      # message that went unread before the rule it tests existed.
+      - name: Read-state rules
+        run: node --test skills/slack-waterline/scripts/lib/state.test.mjs
+
+      - name: Every script parses
+        run: |
+          for f in skills/slack-waterline/scripts/*.mjs skills/slack-waterline/scripts/lib/*.mjs; do
+            node --check "$f"
+          done
+
+      # A real Slack token carries a numeric workspace id after the prefix, so
+      # this matches credentials without tripping on `xoxp-your-token-here`
+      # placeholders in the docs and the .env template.
+      - name: No token ever committed
+        run: |
+          if grep -rInE 'xox[bpasre]-[0-9]{8,}-[0-9A-Za-z-]{8,}' --exclude-dir=.git .; then
+            echo "::error::A Slack token is present in the repo."
+            exit 1
+          fi

@@ -1,0 +1,6 @@
+# LF everywhere. The scripts run on Windows, macOS and Linux, and a CRLF
+# shebang line breaks execution on POSIX.
+* text=auto eol=lf
+
+# PowerShell is the exception; it wants CRLF on Windows.
+*.ps1 text eol=crlf

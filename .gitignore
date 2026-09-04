@@ -1,0 +1,18 @@
+# Secrets — never, under any circumstances.
+.env
+.env.*
+!.env.example
+
+# Workspace data must never live in the skill repo. It holds private
+# conversations, including DMs.
+state.json
+raw/
+conversations/
+reports/
+tmp/
+.cache/
+*.jsonl
+
+node_modules/
+.DS_Store
+Thumbs.db
