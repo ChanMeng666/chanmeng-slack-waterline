@@ -11,7 +11,7 @@ and `scripts/lib/state.test.mjs` names which. If a test starts failing, a messag
 is about to go missing — do not adjust the expectation to match the code.
 
 ```bash
-node --test skills/slack-waterline/scripts/lib/state.test.mjs
+node --test skills/slack-waterline/scripts/lib/*.test.mjs
 ```
 
 ## Invariants — do not break these
@@ -31,7 +31,13 @@ node --test skills/slack-waterline/scripts/lib/state.test.mjs
    gates deliberately exit with a finding count. Use `finish()` / `runMain()`
    from `lib/slack.mjs`.
 7. **Atomic writes.** Temp file, then rename.
-8. **Never commit workspace data or a token.** CI greps for `xox*-` patterns.
+8. **Never commit workspace data or a token.** CI greps for real token shapes.
+9. **Never handle a live token yourself.** It moves from Slack's page into
+   `.env` by clipboard (`setup.mjs --token-from-clipboard`) and by no other
+   route. Do not accept one as a CLI argument, do not ask for one in chat, do
+   not read one off a web page, and do not unmask a masked token field — a
+   credential in a transcript outlives the session and is harder to revoke than
+   to leak.
 
 ## House style
 

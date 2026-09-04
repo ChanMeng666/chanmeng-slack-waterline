@@ -182,20 +182,25 @@ note(`\nRegistered in ${REGISTRY_PATH}`)
 
 const slack = new Slack(dataDir, { require: false })
 if (!slack.token) {
+  // The scope list and the click-path live in setup.mjs and references/setup.md.
+  // Keeping a second copy here is how the two drift until one of them is wrong.
   console.log(
-    `\nNext: put a token in ${join(dataDir, '.env')}\n` +
-      `  cp ${join(dataDir, '.env.example')} ${join(dataDir, '.env')}\n\n` +
-      'Mint one at https://api.slack.com/apps → your app → OAuth & Permissions.\n' +
-      'User token scopes for full read coverage:\n' +
-      '  channels:history channels:read groups:history groups:read\n' +
-      '  im:history im:read mpim:history mpim:read\n' +
-      '  users:read files:read pins:read bookmarks:read\n' +
-      'Add chat:write only if you want the digest DM and reply sending.\n\n' +
-      'Then verify:  node init.mjs --workspace ' + slug + ' --dir ' + dataDir
+    '\nNo token yet. Get one:\n\n' +
+      `  node setup.mjs --workspace ${slug} --manifest --out slack-app.yaml\n\n` +
+      '  Then at https://api.slack.com/apps: Create New App → From an app\n' +
+      '  manifest → paste that file → Create → Install to Workspace → Allow.\n' +
+      '  On OAuth & Permissions, click Copy under "User OAuth Token", then:\n\n' +
+      `  node setup.mjs --workspace ${slug} --token-from-clipboard\n\n` +
+      '  That moves the token from your clipboard straight into .env, so it\n' +
+      '  never passes through your terminal or shell history.\n\n' +
+      `Stuck at any point:  node setup.mjs --workspace ${slug}`
   )
   await finish(0)
+} else {
+  await verifyConnection()
 }
 
+async function verifyConnection() {
 slack.announceIdentity()
 try {
   const me = await slack.call('auth.test', {})
@@ -237,5 +242,8 @@ try {
   if (/missing_scope/.test(e.message)) {
     console.error('  Add the missing scope in your Slack app, then REINSTALL the app to the workspace.')
   }
+  console.error(`
+  Diagnose it:  node setup.mjs --workspace ${slug}`)
   await finish(1)
+}
 }

@@ -17,6 +17,7 @@ which turns any interruption into a permanent silent loss.
 ## Docs
 
 - [SKILL.md](skills/slack-waterline/SKILL.md): the operating instructions an agent follows
+- [setup.md](skills/slack-waterline/references/setup.md): getting a token from zero — manifest, browser-driven, or by hand
 - [read-state.md](skills/slack-waterline/references/read-state.md): the three read positions and the misses that motivated each
 - [tokens-and-scopes.md](skills/slack-waterline/references/tokens-and-scopes.md): user vs bot tokens, scope list, rate limits, the HTTP 200 trap
 - [workspace-config.md](skills/slack-waterline/references/workspace-config.md): per-workspace config, signal patterns, running many workspaces

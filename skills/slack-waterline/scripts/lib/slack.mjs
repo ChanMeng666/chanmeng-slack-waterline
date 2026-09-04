@@ -45,8 +45,14 @@ export function loadTokens(dataDir) {
       const m = line.match(/^\s*(SLACK_USER_TOKEN|SLACK_BOT_TOKEN)\s*=\s*(.+?)\s*$/)
       if (!m) continue
       const key = m[1] === 'SLACK_USER_TOKEN' ? 'user' : 'bot'
+      const value = m[2].replace(/^["']|["']$/g, '')
+      // `cp .env.example .env` is the most common first move, and it leaves the
+      // placeholder behind. Treating that as a token produces `invalid_auth`,
+      // which reads like a revoked credential rather than "you have not filled
+      // this in yet".
+      if (value.includes('your-token-here')) continue
       // The environment wins, so an ad-hoc override does not need a file edit.
-      if (!fromEnv[key]) fromEnv[key] = m[2].replace(/^["']|["']$/g, '')
+      if (!fromEnv[key]) fromEnv[key] = value
     }
   }
   return fromEnv
@@ -92,6 +98,10 @@ export class Slack {
 
   /** One line on stderr so every run says which identity it read as. */
   announceIdentity() {
+    if (!this.token) {
+      note('auth: NO TOKEN — run setup.mjs')
+      return
+    }
     note(
       this.usingUserToken
         ? 'auth: SLACK_USER_TOKEN (user identity — includes DMs, group DMs and your private channels)'
@@ -101,6 +111,32 @@ export class Slack {
 
   async call(method, params = {}, { post = false, token = this.token } = {}) {
     return request(method, params, { post, token })
+  }
+
+  /**
+   * The scopes this token was actually GRANTED, straight from Slack.
+   *
+   * Slack returns them in the `x-oauth-scopes` response header on every Web API
+   * call, which beats probing endpoint by endpoint: it is one request, it needs
+   * no sample channel to call things against, and it reports scopes whose
+   * endpoints we would never otherwise touch.
+   *
+   * It also answers the question people actually get wrong — adding a scope in
+   * the app config does nothing until the app is REINSTALLED, so the config page
+   * and this header routinely disagree. This header is the one that matters.
+   */
+  async grantedScopes(token = this.token) {
+    const { body, headers } = await request('auth.test', {}, { token, returnHeaders: true })
+    const raw = headers.get('x-oauth-scopes') ?? ''
+    return {
+      identity: body,
+      scopes: new Set(
+        raw
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+      ),
+    }
   }
 
   /** POST form of `call`, for the write endpoints that require a JSON body. */
@@ -228,7 +264,7 @@ const MAX_RETRIES = 6
  * revoked token or a workspace-wide throttle into a process that never exits
  * and never says why.
  */
-async function request(method, params, { post = false, token }) {
+async function request(method, params, { post = false, token, returnHeaders = false }) {
   let attempt = 0
   for (;;) {
     const opts = { headers: { Authorization: `Bearer ${token}` } }
@@ -261,7 +297,7 @@ async function request(method, params, { post = false, token }) {
       continue
     }
 
-    if (body.ok) return body
+    if (body.ok) return returnHeaders ? { body, headers: res.headers } : body
 
     if (body.error === 'ratelimited' || res.status === 429) {
       if (attempt++ >= MAX_RETRIES) {

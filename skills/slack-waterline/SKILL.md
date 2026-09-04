@@ -1,6 +1,6 @@
 ---
 name: slack-waterline
-description: Read every message in a Slack workspace and prove nothing was missed — then write the daily or weekly digest and, when asked, the reply. Use whenever someone wants to catch up on Slack, be caught up, or stop tracking it by hand — "catch me up on Slack", "what did I miss", "did anyone need me today", "read everything in #eng since Monday", "summarise this week's Slack", "send me my Slack daily report", "check my DMs", "sync workspace X", "am I behind on anything", "draft a reply to that thread". Also for setting up a new Slack workspace to track, auditing whether the read state is honest, reading a Google Sheet somebody linked in a channel, or downloading and reading an attachment. Works across many workspaces from one install; never marks a message read that nobody read.
+description: Read every message in a Slack workspace and prove nothing was missed — then write the daily or weekly digest and, when asked, the reply. Use whenever someone wants to catch up on Slack, be caught up, or stop tracking it by hand — "catch me up on Slack", "what did I miss", "did anyone need me today", "read everything in #eng since Monday", "summarise this week's Slack", "send me my Slack daily report", "check my DMs", "sync workspace X", "am I behind on anything", "draft a reply to that thread". Also for setting anything up from scratch — "help me set up Slack", "how do I get a Slack token", "set up my Slack token in Chrome", "configure a new workspace", "why can't it see my DMs", "check my Slack permissions", "it says missing_scope" — plus auditing whether the read state is honest, reading a Google Sheet somebody linked in a channel, or downloading and reading an attachment. Works across many workspaces from one install; never marks a message read that nobody read.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
@@ -26,21 +26,78 @@ Everything below follows from that.
 
 ---
 
-## Setup
+## Setting up from zero
+
+If anything is unconfigured — no workspace, no token, missing scopes — **run the
+doctor first and follow what it says.** Do not guess at the state.
 
 ```bash
 cd skills/slack-waterline/scripts
-node init.mjs --workspace acme --dir /path/to/acme-slack-archive
+node setup.mjs                       # or --workspace acme
 ```
 
-That scaffolds the data directory, writes a `.gitignore` that keeps the token
-out of git, and registers `acme` so every other command takes just
-`--workspace acme`. Then put a token in `<dir>/.env` and re-run `init.mjs` to
-verify it.
+It checks Node, the workspace, the token, every scope, and whether anything has
+been read, then stops at the first real blocker and prints the exact command or
+click that clears it. Run it again after each fix. Full walkthrough in
+`references/setup.md`.
 
-**One skill, many workspaces.** The registry lives at
-`~/.slack-waterline/config.json` and holds paths only. Tokens live in each
-workspace's own `.env`. `node init.mjs --list` shows what is registered.
+The normal sequence for a brand-new workspace:
+
+```bash
+node init.mjs  --workspace acme --dir /path/to/acme-slack-archive
+node setup.mjs --workspace acme --manifest --out slack-app.yaml
+# user creates the app from that manifest and clicks Copy on the token
+node setup.mjs --workspace acme --token-from-clipboard
+node setup.mjs --workspace acme       # confirm; then discover + catchup
+```
+
+The manifest matters: it sets all twelve scopes in one paste instead of the user
+hunting checkboxes, and it puts them under **User** Token Scopes, which is the
+mistake that otherwise produces a token that cannot see a single DM.
+
+**One skill, many workspaces.** The registry at `~/.slack-waterline/config.json`
+holds paths only; tokens live in each workspace's own `.env`.
+`node init.mjs --list` shows what is registered.
+
+### Never handle the token yourself
+
+> **A live token must never enter a terminal, a shell history, or a chat
+> transcript.**
+
+It only has to travel from Slack's page into one file, so move it by clipboard:
+
+```bash
+node setup.mjs --workspace acme --token-from-clipboard
+```
+
+That validates it, writes it, verifies it against Slack, and prints only which
+team and user it belongs to. Never accept or pass a token as a command-line
+argument, never ask the user to paste one into the chat, and never write one
+into a file yourself.
+
+### Driving the browser for setup
+
+When the user asks to be walked through it in Chrome, `references/setup.md` has
+the step-by-step with the exact tool calls. The shape:
+
+1. Generate the manifest first, so you have the YAML before you need it.
+2. Load the browser tools in **one** `ToolSearch` call, then `tabs_context_mcp`
+   before creating a tab.
+3. Drive: create app from manifest → install → land on **OAuth & Permissions**.
+4. Read the scope list back to the user **before** clicking Allow. It is their
+   workspace and their consent.
+5. **Stop at the token.** Ask them to click **Copy**, then run
+   `setup.mjs --token-from-clipboard`.
+
+**Do not read the token off the page** — no `read_page`, `get_page_text`,
+`find`, `javascript_tool` or screenshot aimed at that field, and do not click
+**Show** to unmask it. Slack masks it by default; capturing it would write a
+live credential into a transcript that outlives the session and is far harder to
+revoke than to leak. Step 5 exists so it never has to.
+
+Never touch Client Secret, Signing Secret or App-Level Tokens — this skill needs
+none of them. If the user is signed out, ask them to sign in; never drive a
+login form.
 
 ### Tokens
 
@@ -310,8 +367,9 @@ the "new conversations" pass only.
 
 | symptom | cause |
 |---|---|
+| anything below, or an unclear state | `node setup.mjs --workspace <slug>` says which and how to fix it |
 | `invalid_auth` | the env var is `SLACK_USER_TOKEN`, not `SLACK_TOKEN`; or the token was revoked |
-| `missing_scope` | add the scope **and reinstall the app** — scopes do not apply until reinstall |
+| `missing_scope` | add the scope **and reinstall the app** — scopes do not apply until reinstall; `setup.mjs --verify` reads what was actually granted |
 | `not_in_channel` | private channel; a human must `/invite` you |
 | `channel_not_found` on a DM | some app DMs are not readable; reported per row, not fatal |
 | triage says a channel is quiet but you saw a message | it was a thread reply; look for `(thread replies)`, or re-fetch with `--full` |

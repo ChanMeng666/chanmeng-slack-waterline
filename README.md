@@ -138,14 +138,52 @@ New-Item -ItemType SymbolicLink `
 ```
 </details>
 
+## Setting up from zero
+
+Never used the Slack API before? The skill walks you through it and checks its
+own work:
+
+```bash
+node setup.mjs --workspace acme
+```
+
+That prints ✓ or ✗ for Node, the workspace, the token and **every scope**, then
+stops at the first real blocker with the exact command or click that clears it.
+
+The fast path is a Slack app manifest — one paste instead of ticking twelve
+scope checkboxes, and it puts them under *User* Token Scopes, which is the
+mistake that otherwise yields a token that cannot see a single DM:
+
+```bash
+node setup.mjs --workspace acme --manifest --out slack-app.yaml
+# api.slack.com/apps → Create New App → From an app manifest → paste → Install
+node setup.mjs --workspace acme --token-from-clipboard
+```
+
+Or let your agent drive Chrome: **"set up my Slack token in Chrome"**. It fills
+the manifest, reads the consent screen back to you before clicking Allow, and
+then deliberately stops and asks *you* to click Copy.
+
+**The token never passes through a terminal, a shell history, or a chat
+transcript.** It only has to get from Slack's page into one file, so it moves by
+clipboard — `--token-from-clipboard` validates it, writes it, verifies it
+against Slack, and prints only which team and user it belongs to. The agent is
+told never to read that field off the page, and never to unmask it.
+
+Already set up and something is off? `--verify` reads the scopes Slack actually
+*granted*, from the `x-oauth-scopes` response header rather than the app config
+page. That distinction is the most common setup failure in this whole tool:
+**adding a scope does nothing until you reinstall the app**, so the config page
+and your token routinely disagree.
+
 ## Usage
 
 Set up a workspace once:
 
 ```bash
 cd skills/slack-waterline/scripts
-node init.mjs --workspace acme --dir /path/to/acme-slack-archive
-# put SLACK_USER_TOKEN in <dir>/.env, then re-run to verify
+node init.mjs  --workspace acme --dir /path/to/acme-slack-archive
+node setup.mjs --workspace acme     # tells you exactly what is left
 ```
 
 Then just ask your agent:
@@ -178,11 +216,13 @@ node send.mjs     --workspace acme --to '@Saba' --file draft.md --dry-run
 skills/slack-waterline/
   SKILL.md                    what the agent reads
   references/
+    setup.md                  three paths to a token, including browser-driven
     read-state.md             the three positions, and what went unread before each existed
     tokens-and-scopes.md      xoxp vs xoxb, the scope list, the HTTP 200 trap
     workspace-config.md       config schema, signal patterns, multi-workspace
     reports.md                digest format, delivery, scheduling
   scripts/
+    setup.mjs                 guided setup + scope doctor (start here)
     init.mjs                  scaffold and register a workspace
     discover.mjs              Layer A — triage the whole workspace
     fetch.mjs                 Layer B — pull one conversation
