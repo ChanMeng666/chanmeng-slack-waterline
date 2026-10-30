@@ -205,7 +205,7 @@ function renderIndex(entries, totals) {
       `${totals.mechanical} mechanical omitted`
   )
   out.push('')
-  out.push(`_Generated ${new Date().toISOString()} by slack-waterline. Do not hand-edit._`)
+  out.push(`_Generated ${new Date().toISOString()} by chanmeng-slack-waterline. Do not hand-edit._`)
   out.push('')
 
   for (const type of ['dm', 'group-dm', 'private', 'channel']) {

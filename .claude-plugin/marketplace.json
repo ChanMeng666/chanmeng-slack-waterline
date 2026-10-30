@@ -7,7 +7,7 @@
   },
   "plugins": [
     {
-      "name": "slack-waterline",
+      "name": "chanmeng-slack-waterline",
       "source": "./",
       "description": "Read every message in a Slack workspace and prove nothing was missed, then write the daily or weekly digest and, when asked, the reply."
     }

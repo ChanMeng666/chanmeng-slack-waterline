@@ -1,5 +1,5 @@
 ---
-name: slack-waterline
+name: chanmeng-slack-waterline
 description: Read every message in a Slack workspace and prove nothing was missed — then write the daily or weekly digest and, when asked, the reply. Use whenever someone wants to catch up on Slack, be caught up, or stop tracking it by hand — "catch me up on Slack", "what did I miss", "did anyone need me today", "read everything in #eng since Monday", "summarise this week's Slack", "send me my Slack daily report", "check my DMs", "sync workspace X", "am I behind on anything", "draft a reply to that thread". Also for setting anything up from scratch — "help me set up Slack", "how do I get a Slack token", "set up my Slack token in Chrome", "configure a new workspace", "why can't it see my DMs", "check my Slack permissions", "it says missing_scope" — plus auditing whether the read state is honest, reading a Google Sheet somebody linked in a channel, or downloading and reading an attachment. Works across many workspaces from one install; never marks a message read that nobody read.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
@@ -32,7 +32,7 @@ If anything is unconfigured — no workspace, no token, missing scopes — **run
 doctor first and follow what it says.** Do not guess at the state.
 
 ```bash
-cd skills/slack-waterline/scripts
+cd skills/chanmeng-slack-waterline/scripts
 node setup.mjs                       # or --workspace acme
 ```
 
@@ -55,7 +55,7 @@ The manifest matters: it sets all twelve scopes in one paste instead of the user
 hunting checkboxes, and it puts them under **User** Token Scopes, which is the
 mistake that otherwise produces a token that cannot see a single DM.
 
-**One skill, many workspaces.** The registry at `~/.slack-waterline/config.json`
+**One skill, many workspaces.** The registry at `~/.chanmeng-slack-waterline/config.json`
 holds paths only; tokens live in each workspace's own `.env`.
 `node init.mjs --list` shows what is registered.
 

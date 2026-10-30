@@ -1,6 +1,6 @@
 // Offline assertions on every read-state rule. No network, no fixtures, ~1s.
 //
-//   node --test skills/slack-waterline/scripts/lib/
+//   node --test skills/chanmeng-slack-waterline/scripts/lib/
 //
 // Each test names the miss it prevents. If one starts failing, a message is
 // about to go unread — do not adjust the expectation to match the code.

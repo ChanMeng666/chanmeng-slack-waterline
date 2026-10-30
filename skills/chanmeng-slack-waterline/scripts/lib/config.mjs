@@ -1,6 +1,6 @@
 // Workspace resolution: one skill installation, many Slack workspaces.
 //
-// A registry at ~/.slack-waterline/config.json maps a workspace slug to a data
+// A registry at ~/.chanmeng-slack-waterline/config.json maps a workspace slug to a data
 // directory. The data directory holds everything specific to that workspace —
 // its token, its config, its manifest, its archive.
 //
@@ -13,7 +13,7 @@ import { join, resolve, isAbsolute } from 'node:path'
 import { homedir } from 'node:os'
 import { fail } from './slack.mjs'
 
-export const REGISTRY_DIR = join(homedir(), '.slack-waterline')
+export const REGISTRY_DIR = join(homedir(), '.chanmeng-slack-waterline')
 export const REGISTRY_PATH = join(REGISTRY_DIR, 'config.json')
 
 export function loadRegistry() {

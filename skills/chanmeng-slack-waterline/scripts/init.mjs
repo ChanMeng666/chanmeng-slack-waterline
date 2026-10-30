@@ -7,7 +7,7 @@
 //
 // Creates the data directory, writes a starter config and a .gitignore that
 // keeps the token out of git, and records the slug → path mapping in
-// ~/.slack-waterline/config.json so every other script can be run with just
+// ~/.chanmeng-slack-waterline/config.json so every other script can be run with just
 // `--workspace acme`.
 //
 // Safe to re-run: existing files are never overwritten.
@@ -130,7 +130,7 @@ write(
   'README.md',
   `# ${slug} — Slack archive
 
-Data directory for the [slack-waterline](https://github.com/ChanMeng666/slack-waterline-skill)
+Data directory for the [chanmeng-slack-waterline](https://github.com/ChanMeng666/chanmeng-slack-waterline)
 skill. Not a codebase — this holds read state and message history for the
 \`${slug}\` Slack workspace.
 

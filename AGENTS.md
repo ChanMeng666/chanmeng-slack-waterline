@@ -1,17 +1,17 @@
 # Agent notes
 
 You are probably here to use the skill, not to change it. Read
-`skills/slack-waterline/SKILL.md` and follow it.
+`skills/chanmeng-slack-waterline/SKILL.md` and follow it.
 
 ## If you are changing the skill
 
-Read `skills/slack-waterline/references/read-state.md` first. Every rule in
+Read `skills/chanmeng-slack-waterline/references/read-state.md` first. Every rule in
 `scripts/lib/state.mjs` is a message that went unread until the rule existed,
 and `scripts/lib/state.test.mjs` names which. If a test starts failing, a message
 is about to go missing — do not adjust the expectation to match the code.
 
 ```bash
-node --test skills/slack-waterline/scripts/lib/*.test.mjs
+node --test skills/chanmeng-slack-waterline/scripts/lib/*.test.mjs
 ```
 
 ## Invariants — do not break these

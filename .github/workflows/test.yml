@@ -18,11 +18,11 @@ jobs:
       # Offline. No token, no network, no fixtures — every assertion is a real
       # message that went unread before the rule it tests existed.
       - name: Offline rules — read state, token resolution
-        run: node --test skills/slack-waterline/scripts/lib/*.test.mjs
+        run: node --test skills/chanmeng-slack-waterline/scripts/lib/*.test.mjs
 
       - name: Every script parses
         run: |
-          for f in skills/slack-waterline/scripts/*.mjs skills/slack-waterline/scripts/lib/*.mjs; do
+          for f in skills/chanmeng-slack-waterline/scripts/*.mjs skills/chanmeng-slack-waterline/scripts/lib/*.mjs; do
             node --check "$f"
           done
 

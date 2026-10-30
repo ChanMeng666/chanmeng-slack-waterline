@@ -110,7 +110,7 @@ Set `SLACK_USERS_CACHE_TTL_MIN=0` to force a directory refresh.
 
 - It lives in the **workspace data directory's** `.env`, which `init.mjs`
   gitignores. Never in the skill repo, never in the registry.
-- The registry at `~/.slack-waterline/config.json` holds paths only.
+- The registry at `~/.chanmeng-slack-waterline/config.json` holds paths only.
 - The SDK-style debug logging that dumps full response bodies is deliberately
   absent: on a token that can read your DMs, that is private conversation
   written to a log file.

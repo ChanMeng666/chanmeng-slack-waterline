@@ -1,6 +1,6 @@
 // Offline assertions on token resolution. No network.
 //
-//   node --test skills/slack-waterline/scripts/lib/slack.test.mjs
+//   node --test skills/chanmeng-slack-waterline/scripts/lib/slack.test.mjs
 
 import { test } from 'node:test'
 import assert from 'node:assert/strict'

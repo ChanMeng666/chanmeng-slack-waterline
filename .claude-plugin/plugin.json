@@ -1,5 +1,5 @@
 {
-  "name": "slack-waterline",
+  "name": "chanmeng-slack-waterline",
   "description": "Read every message in a Slack workspace and prove nothing was missed, then write the daily or weekly digest and, when asked, the reply.",
   "version": "0.1.0",
   "author": {
@@ -7,8 +7,8 @@
     "email": "chanmeng.dev@gmail.com",
     "url": "https://github.com/ChanMeng666"
   },
-  "homepage": "https://github.com/ChanMeng666/slack-waterline-skill",
-  "repository": "https://github.com/ChanMeng666/slack-waterline-skill",
+  "homepage": "https://github.com/ChanMeng666/chanmeng-slack-waterline",
+  "repository": "https://github.com/ChanMeng666/chanmeng-slack-waterline",
   "license": "MIT",
   "keywords": ["slack", "digest", "inbox", "productivity", "automation"],
   "skills": "./skills/"

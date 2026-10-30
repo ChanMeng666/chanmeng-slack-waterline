@@ -1,4 +1,4 @@
-# slack-waterline
+# chanmeng-slack-waterline
 
 > A Claude Code skill that reads every message in a Slack workspace and proves
 > nothing was missed, then writes the daily or weekly digest and, when asked,
@@ -16,11 +16,11 @@ which turns any interruption into a permanent silent loss.
 
 ## Docs
 
-- [SKILL.md](skills/slack-waterline/SKILL.md): the operating instructions an agent follows
-- [setup.md](skills/slack-waterline/references/setup.md): getting a token from zero — manifest, browser-driven, or by hand
-- [read-state.md](skills/slack-waterline/references/read-state.md): the three read positions and the misses that motivated each
-- [tokens-and-scopes.md](skills/slack-waterline/references/tokens-and-scopes.md): user vs bot tokens, scope list, rate limits, the HTTP 200 trap
-- [workspace-config.md](skills/slack-waterline/references/workspace-config.md): per-workspace config, signal patterns, running many workspaces
-- [reports.md](skills/slack-waterline/references/reports.md): digest format, delivery to your own DM, scheduling
+- [SKILL.md](skills/chanmeng-slack-waterline/SKILL.md): the operating instructions an agent follows
+- [setup.md](skills/chanmeng-slack-waterline/references/setup.md): getting a token from zero — manifest, browser-driven, or by hand
+- [read-state.md](skills/chanmeng-slack-waterline/references/read-state.md): the three read positions and the misses that motivated each
+- [tokens-and-scopes.md](skills/chanmeng-slack-waterline/references/tokens-and-scopes.md): user vs bot tokens, scope list, rate limits, the HTTP 200 trap
+- [workspace-config.md](skills/chanmeng-slack-waterline/references/workspace-config.md): per-workspace config, signal patterns, running many workspaces
+- [reports.md](skills/chanmeng-slack-waterline/references/reports.md): digest format, delivery to your own DM, scheduling
 - [AGENTS.md](AGENTS.md): invariants for anyone modifying the skill
 - [README.md](README.md): install and usage

@@ -7,7 +7,7 @@
 
 <div align="center">
 
-# slack-waterline
+# chanmeng-slack-waterline
 
 **Read every message in a Slack workspace — and prove nothing was missed.**
 
@@ -16,7 +16,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code/skills) skill tha
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 [![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-d97757?style=flat-square)](https://docs.anthropic.com/en/docs/claude-code/skills)
 [![Node.js](https://img.shields.io/badge/Node.js-zero%20dependencies-339933?style=flat-square)](https://nodejs.org)
-[![test](https://github.com/ChanMeng666/slack-waterline-skill/actions/workflows/test.yml/badge.svg)](https://github.com/ChanMeng666/slack-waterline-skill/actions/workflows/test.yml)
+[![test](https://github.com/ChanMeng666/chanmeng-slack-waterline/actions/workflows/test.yml/badge.svg)](https://github.com/ChanMeng666/chanmeng-slack-waterline/actions/workflows/test.yml)
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?style=flat-square&logo=githubsponsors)](https://github.com/sponsors/ChanMeng666)
 
 </div>
@@ -99,7 +99,7 @@ later, somewhere unrelated.
 - **Node 18+** (uses global `fetch` and `node --test`). No npm install.
 - **A Slack user token** (`xoxp-`). A bot token cannot see a single DM, which
   makes it close to useless for catching *you* up. See
-  [`references/tokens-and-scopes.md`](skills/slack-waterline/references/tokens-and-scopes.md).
+  [`references/tokens-and-scopes.md`](skills/chanmeng-slack-waterline/references/tokens-and-scopes.md).
 
 Two things no token can fix, stated plainly rather than papered over: **DMs
 between two other people** need Slack's Discovery API (Enterprise Grid only), and
@@ -110,22 +110,22 @@ between two other people** need Slack's Discovery API (Enterprise Grid only), an
 **Plugin marketplace** — in Claude Code:
 
 ```
-/plugin marketplace add ChanMeng666/slack-waterline-skill
-/plugin install slack-waterline@chanmeng-slack-waterline
+/plugin marketplace add ChanMeng666/chanmeng-slack-waterline
+/plugin install chanmeng-slack-waterline@chanmeng-slack-waterline
 ```
 
 **Clone and copy:**
 
 ```bash
-git clone https://github.com/ChanMeng666/slack-waterline-skill.git
-cp -r slack-waterline-skill/skills/slack-waterline ~/.claude/skills/
+git clone https://github.com/ChanMeng666/chanmeng-slack-waterline.git
+cp -r chanmeng-slack-waterline/skills/chanmeng-slack-waterline ~/.claude/skills/
 ```
 
 **Symlink** (best while iterating):
 
 ```bash
-git clone https://github.com/ChanMeng666/slack-waterline-skill.git
-ln -s "$PWD/slack-waterline-skill/skills/slack-waterline" ~/.claude/skills/slack-waterline
+git clone https://github.com/ChanMeng666/chanmeng-slack-waterline.git
+ln -s "$PWD/chanmeng-slack-waterline/skills/chanmeng-slack-waterline" ~/.claude/skills/chanmeng-slack-waterline
 ```
 
 <details>
@@ -133,8 +133,8 @@ ln -s "$PWD/slack-waterline-skill/skills/slack-waterline" ~/.claude/skills/slack
 
 ```powershell
 New-Item -ItemType SymbolicLink `
-  -Path "$env:USERPROFILE\.claude\skills\slack-waterline" `
-  -Target "$PWD\slack-waterline-skill\skills\slack-waterline"
+  -Path "$env:USERPROFILE\.claude\skills\chanmeng-slack-waterline" `
+  -Target "$PWD\chanmeng-slack-waterline\skills\chanmeng-slack-waterline"
 ```
 </details>
 
@@ -181,7 +181,7 @@ and your token routinely disagree.
 Set up a workspace once:
 
 ```bash
-cd skills/slack-waterline/scripts
+cd skills/chanmeng-slack-waterline/scripts
 node init.mjs  --workspace acme --dir /path/to/acme-slack-archive
 node setup.mjs --workspace acme     # tells you exactly what is left
 ```
@@ -213,7 +213,7 @@ node send.mjs     --workspace acme --to '@Saba' --file draft.md --dry-run
 ## Layout
 
 ```
-skills/slack-waterline/
+skills/chanmeng-slack-waterline/
   SKILL.md                    what the agent reads
   references/
     setup.md                  three paths to a token, including browser-driven

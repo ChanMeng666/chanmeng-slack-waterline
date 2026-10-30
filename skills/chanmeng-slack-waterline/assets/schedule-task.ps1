@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Register a Windows Scheduled Task that DMs you a slack-waterline digest.
+  Register a Windows Scheduled Task that DMs you a chanmeng-slack-waterline digest.
 
 .EXAMPLE
   .\schedule-task.ps1 -Workspace acme -Period day  -Time 08:00
@@ -28,7 +28,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$taskName = "slack-waterline-$Workspace-$Period"
+$taskName = "chanmeng-slack-waterline-$Workspace-$Period"
 
 if ($Unregister) {
   if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) {
@@ -71,7 +71,7 @@ Register-ScheduledTask `
   -Action $action `
   -Trigger $trigger `
   -Settings $settings `
-  -Description "slack-waterline $Period digest for the '$Workspace' workspace" `
+  -Description "chanmeng-slack-waterline $Period digest for the '$Workspace' workspace" `
   -Force | Out-Null
 
 Write-Host "Registered '$taskName'."

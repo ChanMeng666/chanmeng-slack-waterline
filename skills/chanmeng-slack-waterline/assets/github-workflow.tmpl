@@ -1,4 +1,4 @@
-# slack-waterline triage in CI.
+# chanmeng-slack-waterline triage in CI.
 #
 # Copy to .github/workflows/slack-triage.yml in your WORKSPACE DATA REPO
 # (the private one), and set SLACK_USER_TOKEN as a repository secret.
@@ -41,7 +41,7 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          repository: ChanMeng666/slack-waterline-skill
+          repository: ChanMeng666/chanmeng-slack-waterline
           path: .waterline
 
       - uses: actions/setup-node@v4
@@ -53,7 +53,7 @@ jobs:
           SLACK_USER_TOKEN: ${{ secrets.SLACK_USER_TOKEN }}
           SLACK_WATERLINE_DIR: ${{ github.workspace }}
         run: |
-          node .waterline/skills/slack-waterline/scripts/discover.mjs --all --no-record
+          node .waterline/skills/chanmeng-slack-waterline/scripts/discover.mjs --all --no-record
 
       - name: Enumerate Slack itself
         env:
@@ -62,7 +62,7 @@ jobs:
         # Exits with the finding count. That is information, not a failure.
         continue-on-error: true
         run: |
-          node .waterline/skills/slack-waterline/scripts/coverage.mjs --enumerate-only
+          node .waterline/skills/chanmeng-slack-waterline/scripts/coverage.mjs --enumerate-only
 
       - name: Open or update the backlog issue
         env:
@@ -73,7 +73,7 @@ jobs:
             echo "Automated triage — nothing here has been read."
             echo
             echo '```'
-            node .waterline/skills/slack-waterline/scripts/discover.mjs --all --no-record 2>/dev/null || true
+            node .waterline/skills/chanmeng-slack-waterline/scripts/discover.mjs --all --no-record 2>/dev/null || true
             echo '```'
           } > "$BODY"
 

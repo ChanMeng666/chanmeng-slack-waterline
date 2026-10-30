@@ -8,7 +8,7 @@ take to the next one.
 
 ## The registry
 
-`~/.slack-waterline/config.json` maps a slug to a directory, and nothing else:
+`~/.chanmeng-slack-waterline/config.json` maps a slug to a directory, and nothing else:
 
 ```json
 {
