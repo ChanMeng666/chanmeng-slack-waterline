@@ -1,5 +1,6 @@
 {
   "name": "chanmeng-slack-waterline",
+  "description": "Chan Meng's Claude Code plugin: read every Slack message, prove nothing was missed, then write the digest and the reply.",
   "owner": {
     "name": "Chan Meng",
     "email": "chanmeng.dev@gmail.com",
