@@ -107,6 +107,12 @@ between two other people** need Slack's Discovery API (Enterprise Grid only), an
 
 ## Install
 
+**Any agent** (Claude Code, Cursor, Codex, GitHub Copilot and more), with the skills CLI. Listed on [skills.sh](https://skills.sh/chanmeng666):
+
+```bash
+npx skills add ChanMeng666/chanmeng-slack-waterline
+```
+
 **Plugin marketplace** — in Claude Code:
 
 ```
